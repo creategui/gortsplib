@@ -1743,7 +1743,7 @@ func TestClientReadRTCPReport(t *testing.T) {
 			Payload: byts,
 		}.Write(bconn.Writer)
 		require.NoError(t, err)
-		rs.ProcessFrame(time.Now(), StreamTypeRTP, byts)
+		rs.ProcessPacketRTP(time.Now(), byts)
 
 		err = base.InterleavedFrame{
 			Channel: 1,
