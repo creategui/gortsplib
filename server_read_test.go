@@ -302,14 +302,13 @@ func TestServerRead(t *testing.T) {
 							StatusCode: base.StatusOK,
 						}, nil
 					},
-					onFrame: func(ctx *ServerHandlerOnFrameCtx) {
+					onPacketRTCP: func(ctx *ServerHandlerOnPacketRTCPCtx) {
 						// skip multicast loopback
 						if transport == "multicast" && atomic.AddUint64(&counter, 1) <= 1 {
 							return
 						}
 
 						require.Equal(t, 0, ctx.TrackID)
-						require.Equal(t, StreamTypeRTCP, ctx.StreamType)
 						require.Equal(t, []byte{0x01, 0x02, 0x03, 0x04}, ctx.Payload)
 						close(framesReceived)
 					},
@@ -1200,8 +1199,6 @@ func TestServerReadUDPChangeConn(t *testing.T) {
 					StatusCode: base.StatusOK,
 				}, nil
 			},
-			onFrame: func(ctx *ServerHandlerOnFrameCtx) {
-			},
 			onGetParameter: func(ctx *ServerHandlerOnGetParameterCtx) (*base.Response, error) {
 				return &base.Response{
 					StatusCode: base.StatusOK,
@@ -1298,8 +1295,6 @@ func TestServerReadErrorUDPSamePorts(t *testing.T) {
 				return &base.Response{
 					StatusCode: base.StatusOK,
 				}, nil
-			},
-			onFrame: func(ctx *ServerHandlerOnFrameCtx) {
 			},
 		},
 		UDPRTPAddress:  "127.0.0.1:8000",
