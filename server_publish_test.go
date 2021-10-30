@@ -158,9 +158,10 @@ func TestServerPublishErrorAnnounce(t *testing.T) {
 						}, nil
 					},
 				},
+				RTSPAddress: "localhost:8554",
 			}
 
-			err := s.Start("localhost:8554")
+			err := s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -245,9 +246,10 @@ func TestServerPublishSetupPath(t *testing.T) {
 						}, nil, nil
 					},
 				},
+				RTSPAddress: "localhost:8554",
 			}
 
-			err := s.Start("localhost:8554")
+			err := s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -341,9 +343,10 @@ func TestServerPublishErrorSetupDifferentPaths(t *testing.T) {
 				}, nil, nil
 			},
 		},
+		RTSPAddress: "localhost:8554",
 	}
 
-	err := s.Start("localhost:8554")
+	err := s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -424,9 +427,10 @@ func TestServerPublishErrorSetupTrackTwice(t *testing.T) {
 				}, nil, nil
 			},
 		},
+		RTSPAddress: "localhost:8554",
 	}
 
-	err := s.Start("localhost:8554")
+	err := s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -524,9 +528,10 @@ func TestServerPublishErrorRecordPartialTracks(t *testing.T) {
 				}, nil
 			},
 		},
+		RTSPAddress: "localhost:8554",
 	}
 
-	err := s.Start("localhost:8554")
+	err := s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -653,6 +658,7 @@ func TestServerPublish(t *testing.T) {
 						ctx.Session.WritePacketRTCP(0, []byte{0x09, 0x0A, 0x0B, 0x0C})
 					},
 				},
+				RTSPAddress: "localhost:8554",
 			}
 
 			switch transport {
@@ -666,7 +672,7 @@ func TestServerPublish(t *testing.T) {
 				s.TLSConfig = &tls.Config{Certificates: []tls.Certificate{cert}}
 			}
 
-			err := s.Start("localhost:8554")
+			err := s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -860,9 +866,10 @@ func TestServerPublishErrorInvalidProtocol(t *testing.T) {
 		},
 		UDPRTPAddress:  "127.0.0.1:8000",
 		UDPRTCPAddress: "127.0.0.1:8001",
+		RTSPAddress:    "localhost:8554",
 	}
 
-	err := s.Start("localhost:8554")
+	err := s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -962,9 +969,10 @@ func TestServerPublishRTCPReport(t *testing.T) {
 			},
 		},
 		receiverReportPeriod: 1 * time.Second,
+		RTSPAddress:          "localhost:8554",
 	}
 
-	err := s.Start("localhost:8554")
+	err := s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -1117,6 +1125,7 @@ func TestServerPublishTimeout(t *testing.T) {
 					},
 				},
 				ReadTimeout: 1 * time.Second,
+				RTSPAddress: "localhost:8554",
 			}
 
 			if transport == "udp" {
@@ -1124,7 +1133,7 @@ func TestServerPublishTimeout(t *testing.T) {
 				s.UDPRTCPAddress = "127.0.0.1:8001"
 			}
 
-			err := s.Start("localhost:8554")
+			err := s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -1246,6 +1255,7 @@ func TestServerPublishWithoutTeardown(t *testing.T) {
 					},
 				},
 				ReadTimeout: 1 * time.Second,
+				RTSPAddress: "localhost:8554",
 			}
 
 			if transport == "udp" {
@@ -1253,7 +1263,7 @@ func TestServerPublishWithoutTeardown(t *testing.T) {
 				s.UDPRTCPAddress = "127.0.0.1:8001"
 			}
 
-			err := s.Start("localhost:8554")
+			err := s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -1367,9 +1377,10 @@ func TestServerPublishUDPChangeConn(t *testing.T) {
 		},
 		UDPRTPAddress:  "127.0.0.1:8000",
 		UDPRTCPAddress: "127.0.0.1:8001",
+		RTSPAddress:    "localhost:8554",
 	}
 
-	err := s.Start("localhost:8554")
+	err := s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()

@@ -104,9 +104,10 @@ func TestServerReadSetupPath(t *testing.T) {
 						}, stream, nil
 					},
 				},
+				RTSPAddress: "localhost:8554",
 			}
 
-			err = s.Start("localhost:8554")
+			err = s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -169,9 +170,10 @@ func TestServerReadSetupErrors(t *testing.T) {
 						}, stream, nil
 					},
 				},
+				RTSPAddress: "localhost:8554",
 			}
 
-			err = s.Start("localhost:8554")
+			err = s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -272,6 +274,8 @@ func TestServerRead(t *testing.T) {
 
 			counter := uint64(0)
 
+			listenIP := multicastCapableIP(t)
+
 			s := &Server{
 				Handler: &testServerHandler{
 					onConnOpen: func(ctx *ServerHandlerOnConnOpenCtx) {
@@ -318,6 +322,7 @@ func TestServerRead(t *testing.T) {
 						}, nil
 					},
 				},
+				RTSPAddress: listenIP + ":8554",
 			}
 
 			switch transport {
@@ -336,8 +341,7 @@ func TestServerRead(t *testing.T) {
 				s.TLSConfig = &tls.Config{Certificates: []tls.Certificate{cert}}
 			}
 
-			listenIP := multicastCapableIP(t)
-			err = s.Start(listenIP + ":8554")
+			err = s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -614,9 +618,10 @@ func TestServerReadTCPResponseBeforeFrames(t *testing.T) {
 				}, nil
 			},
 		},
+		RTSPAddress: "localhost:8554",
 	}
 
-	err = s.Start("localhost:8554")
+	err = s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -686,9 +691,10 @@ func TestServerReadPlayPlay(t *testing.T) {
 		},
 		UDPRTPAddress:  "127.0.0.1:8000",
 		UDPRTCPAddress: "127.0.0.1:8001",
+		RTSPAddress:    "localhost:8554",
 	}
 
-	err = s.Start("localhost:8554")
+	err = s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -794,9 +800,10 @@ func TestServerReadPlayPausePlay(t *testing.T) {
 				}, nil
 			},
 		},
+		RTSPAddress: "localhost:8554",
 	}
 
-	err = s.Start("localhost:8554")
+	err = s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -909,9 +916,10 @@ func TestServerReadPlayPausePause(t *testing.T) {
 				}, nil
 			},
 		},
+		RTSPAddress: "localhost:8554",
 	}
 
-	err = s.Start("localhost:8554")
+	err = s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -1019,12 +1027,12 @@ func TestServerReadTimeout(t *testing.T) {
 				},
 				ReadTimeout:                    1 * time.Second,
 				closeSessionAfterNoRequestsFor: 1 * time.Second,
+				UDPRTPAddress:                  "127.0.0.1:8000",
+				UDPRTCPAddress:                 "127.0.0.1:8001",
+				RTSPAddress:                    "localhost:8554",
 			}
 
-			s.UDPRTPAddress = "127.0.0.1:8000"
-			s.UDPRTCPAddress = "127.0.0.1:8001"
-
-			err = s.Start("localhost:8554")
+			err = s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -1115,6 +1123,7 @@ func TestServerReadWithoutTeardown(t *testing.T) {
 				},
 				ReadTimeout:                    1 * time.Second,
 				closeSessionAfterNoRequestsFor: 1 * time.Second,
+				RTSPAddress:                    "localhost:8554",
 			}
 
 			if transport == "udp" {
@@ -1122,7 +1131,7 @@ func TestServerReadWithoutTeardown(t *testing.T) {
 				s.UDPRTCPAddress = "127.0.0.1:8001"
 			}
 
-			err = s.Start("localhost:8554")
+			err = s.Start()
 			require.NoError(t, err)
 			defer s.Wait()
 			defer s.Close()
@@ -1207,9 +1216,10 @@ func TestServerReadUDPChangeConn(t *testing.T) {
 		},
 		UDPRTPAddress:  "127.0.0.1:8000",
 		UDPRTCPAddress: "127.0.0.1:8001",
+		RTSPAddress:    "localhost:8554",
 	}
 
-	err = s.Start("localhost:8554")
+	err = s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -1299,9 +1309,10 @@ func TestServerReadErrorUDPSamePorts(t *testing.T) {
 		},
 		UDPRTPAddress:  "127.0.0.1:8000",
 		UDPRTCPAddress: "127.0.0.1:8001",
+		RTSPAddress:    "localhost:8554",
 	}
 
-	err = s.Start("localhost:8554")
+	err = s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -1405,9 +1416,10 @@ func TestServerReadNonSetuppedPath(t *testing.T) {
 				}, nil
 			},
 		},
+		RTSPAddress: "localhost:8554",
 	}
 
-	err = s.Start("localhost:8554")
+	err = s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
@@ -1570,9 +1582,10 @@ func TestServerReadAdditionalInfos(t *testing.T) {
 				}, nil
 			},
 		},
+		RTSPAddress: "localhost:8554",
 	}
 
-	err = s.Start("localhost:8554")
+	err = s.Start()
 	require.NoError(t, err)
 	defer s.Wait()
 	defer s.Close()
